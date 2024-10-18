@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('weather.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            color: #544747; /* Text color */
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            height: 100vh; /* Full viewport height */
+            position: relative; /* For positioning children */
+        }
+
+        .logo {
+            position: absolute; /* Position the logo absolutely */
+            top: 30px; /* Adjust distance from top */
+            left: 30px; /* Adjust distance from left */
+        }
+
+        .profile {
+            position: absolute; /* Position the profile picture absolutely */
+            top: 30px; /* Adjust distance from top */
+            right: 30px; /* Adjust distance from right */
+            border: 3px solid rgb(7, 7, 7);
+        }
+
+        .main-content {
+            flex: 1; /* Take remaining vertical space */
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            text-align: center; /* Center align text */
+        }
+
+        h1 {
+            font-weight: bold; /* Make the title bold */
+            font-size: 3em; /* Increase font size */
+            color: #0e0f10;
+    
+        }
+
+        h1:hover {
+            transform: scale(1.05); /* Slightly increase size */
+        }
+
+        .options {
+            display: flex;
+            justify-content: center; /* Center align options */
+            gap: 15px; /* Space between options */
+            margin-top: 40px;
+        }
+
+        .option {
+            padding: 20px 40px;
+            background-color: #89aed3; /* Bootstrap blue */
+            color: rgb(48, 22, 22);
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold; /* Make the option text bold */
+            font-size: 1.2em; /* Increase font size */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+        }
+
+        .option:hover {
+            background-color: #4d5257; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly increase size */
+        }
+    </style>
+</head>
+<body>
+    <img class="logo" src="weather_logo.png" alt="Weather Logo" style="width: 80px; height: 70px;">
+    <img class="profile" src="WhatsApp Image 2024-10-18 at 1.57.02 PM.jpeg" alt="Profile Picture" style="width: 80px; height: 80px; border-radius: 80%;"> <!-- Replace with your actual profile picture path -->
+    
+    <div class="main-content">
+        <h1>Welcome to My Weather App</h1>
+        <div class="options">
+            <a href="page2.html" class="option">Dashboard</a>
+            <a href="page3.html" class="option">Tables</a>
+        </div>
+    </div>
+</body>
+</html>

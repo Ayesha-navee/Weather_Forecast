@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard</title>
+  <style>
+    /* General body styling */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('weather.jpg'); /* Ensure this image is available in your directory */
+      background-size: cover; /* Make the image cover the whole background */
+      background-position: center; /* Center the image */
+      color: #333;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+      background-color: #1e1e2d; /* Solid dark color */
+      color: white;
+      height: 100vh;
+      width: 220px;
+      position: fixed;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center items horizontally */
+      justify-content: flex-start; /* Align content at the start */
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Logo styling */
+    .sidebar .logo {
+      width: 80px;
+      height: 70px;
+      margin-bottom: 20px; /* Space below the logo */
+    }
+
+    /* Profile picture styling */
+    .profile {
+      width: 80px; /* Smaller size for the profile */
+      height: 80px;
+      border-radius: 50%; /* Circle shape */
+      position: absolute; /* Position it absolutely */
+      top: 20px; /* Space from the top */
+      right: 20px; /* Space from the right */
+      border: 3px solid rgb(7, 7, 7); /* Optional: border around profile picture */
+    }
+
+    /* Adjust the margin for the heading to reduce extra space */
+    .sidebar h2 {
+      font-size: 24px;
+      margin-bottom: 20px; /* Reduce the gap below the heading */
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center; /* Center align text */
+    }
+
+    /* Adjust the button styles */
+    .sidebar button {
+      width: 100%;
+      padding: 10px 20px;
+      margin-top: 10px;
+      background-color: #71717a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar button:hover {
+      background-color: #666772;
+      transform: scale(1.05);
+    }
+
+    /* Main content */
+    .main-content {
+      margin-left: 240px;
+      padding: 40px;
+      padding-bottom: 20px;
+      background: transparent;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column; /* Stack content vertically */
+    }
+
+    /* Flexbox for search bar and logo */
+    .header {
+      display: flex;
+      justify-content: space-between; /* Space between search and logo */
+      align-items: center; /* Center align items vertically */
+      margin-bottom: 30px; /* Space below header */
+    }
+
+    /* Search bar styling */
+    .weather-search {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .weather-search input {
+      padding: 12px 15px;
+      margin-right: 10px;
+      width: 300px;
+      font-size: 18px;
+      border: 2px solid #333;
+      border-radius: 30px;
+      transition: border-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+
+    .weather-search input:focus {
+      border-color: #83a4d4;
+    }
+
+    .weather-search button {
+      padding: 12px 20px;
+      font-size: 18px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .weather-search button:hover {
+      background-color: #555;
+    }
+
+    /* Weather widget styling */
+    #weatherWidget {
+      background: white; /* Solid white background */
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 40px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    #weatherWidget:hover {
+      transform: scale(1.02);
+    }
+
+    #weatherWidget h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #1e1e2d;
+    }
+
+    #weatherWidget p {
+      font-size: 18px;
+      margin: 8px 0;
+      color: #666;
+    }
+
+    /* Chart styling - updated for alignment */
+    #charts {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: nowrap; /* Ensure single lane */
+      overflow: hidden; /* Hide overflow */
+    }
+
+    #charts canvas {
+      background: white; /* Solid white background for charts */
+      padding: 10px; /* Reduced padding */
+      border-radius: 8px; /* Adjusted border radius */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: calc(30%); /* Smaller width for charts */
+      max-width: 300px; /* Adjusted max width */
+      max-height: 250px; /* Set a max height for better visibility */
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 180px;
+      }
+
+      .main-content {
+        margin-left: 200px;
+        padding: 20px;
+      }
+
+      .weather-search input {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .weather-search button {
+        width: 100%;
+      }
+
+      #charts {
+        flex-direction: column; /* Stack vertically on smaller screens */
+        align-items: center;
+      }
+
+      #charts canvas {
+        width: 80%; /* Take full width on small screens */
+        max-width: 300px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        width: 160px;
+      }
+
+      .main-content {
+        margin-left: 180px;
+      }
+
+      .weather-search input {
+        width: 100%;
+      }
+
+      #charts canvas {
+        width: 100%; /* Full width for all charts */
+        max-width: 350px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <img class="logo" src="weather_logo.png" alt="Weather Logo">
+    <button onclick="navigateTo('index.html')">Home</button>
+    <button onclick="navigateTo('page3.html')">Tables</button>
+  </div>
+
+  <img class="profile" src="WhatsApp Image 2024-10-18 at 1.57.02 PM.jpeg" alt="Profile Picture">
+
+  <div class="main-content">
+    <div class="header">
+      <div class="weather-search">
+        <input type="text" id="cityInput" placeholder="Enter city">
+        <button id="getWeatherBtn">Get Weather</button>
+      </div>
+    </div>
+
+    <div id="weatherWidget">
+      <h3 id="cityName">City Name</h3>
+      <p id="temperature">Temperature: --°C</p>
+      <p id="humidity">Humidity: --%</p>
+      <p id="windSpeed">Wind Speed: -- km/h</p>
+      <p id="description">Description: --</p>
+    </div>
+
+    <div id="charts">
+      <canvas id="tempBarChart"></canvas>
+      <canvas id="weatherDonutChart"></canvas>
+      <canvas id="tempLineChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    function navigateTo(page) {
+      window.location.href = page; // Navigate to the specified page
+    }
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="page2.js"></script>
+
+</body>
+</html>

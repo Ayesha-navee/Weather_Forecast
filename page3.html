@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* General body styling with background image */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('weather.jpg'); /* Provided background image */
+      background-size: cover;
+      background-position: center;
+      color: #333;
+      height: 100vh;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+      background-color: rgba(12, 12, 13, 0.8); 
+      color: white;
+      height: 100vh;
+      width: 220px;
+      position: fixed;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Logo styling */
+    .sidebar .logo {
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    /* Sidebar button styles */
+    .sidebar button {
+      width: 100%;
+      padding: 10px 20px;
+      margin: 10px 0;
+      background-color: #71717a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar button:hover {
+      background-color: #666772;
+      transform: scale(1.05);
+    }
+
+    /* Profile styling aligned to the top-right corner */
+    .profile {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 3px solid rgb(7, 7, 7);
+      z-index: 2;
+    }
+
+    /* Main content layout */
+    .main-content {
+      margin-left: 240px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Two equal columns for table and chatbot */
+      grid-gap: 40px; /* Add space between columns */
+    }
+
+    /* Search box styling */
+    .search-bar {
+      grid-column: span 2; /* Span across both columns */
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-bar input {
+      width: 70%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+
+    .search-bar button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #1e1e2d;
+      color: white;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    /* Table section */
+    .table-section {
+      background: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Dropdown section */
+    .dropdown-section {
+      margin-top: 20px;
+    }
+
+    /* Chatbot area */
+    .chatbot-section {
+      background: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #333;
+      padding: 10px;
+    }
+
+    th {
+      background-color: #1e1e2d;
+      color: white;
+    }
+
+    td {
+      text-align: center;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+        grid-gap: 20px; /* Reduce gap for smaller screens */
+      }
+
+      .table-section, .chatbot-section {
+        width: 100%;
+      }
+
+      .search-bar {
+        left: 20px;
+        width: calc(100% - 40px); /* Adjust search bar width */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        width: 160px;
+      }
+
+      .main-content {
+        margin-left: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">Weather App</div>
+    <button onclick="navigateTo('index.html')">Home</button>
+    <button onclick="navigateTo('page2.html')">Dashboard</button>
+  </div>
+
+  <!-- Profile picture -->
+  <img class="profile" src="WhatsApp Image 2024-10-18 at 1.57.02 PM.jpeg" alt="Profile Picture">
+
+  <div class="main-content">
+    <!-- Search box aligned centrally -->
+    <div class="search-bar">
+      <input type="text" placeholder="Search Weather...">
+      <button>Get weather</button>
+    </div>
+
+    <!-- Left section: Table -->
+    <div class="table-section">
+      <h2>Weather Data Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Temperature</th>
+            <th>Conditions</th>
+          </tr>
+        </thead>
+        <tbody id="forecastBody">
+        
+        </tbody>
+      </table>
+
+      <!-- Filter Options -->
+      <div class="dropdown-section">
+        <label for="filterOptions">Sorting</label>
+        <select id="filterOptions">
+          <option value=""></option>
+          <option value="ascending">Show temperatures in ascending order</option>
+          <option value="rain">Filter out days without rain</option>
+          <option value="hottest">Show the day with the highest temperature</option>
+          <option value="descending">Show temperatures in descending order</option>
+          <option value="ascendingAgain">Show temperatures in ascending order again</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="chatbot-section">
+      <h2>Chatbot</h2>
+      <div id="chatbox" style="max-height: 200px; overflow-y: auto;"></div>
+      <input type="text" id="userInput" placeholder="Ask something...">
+      <button id="sendMessageBtn">Send</button>
+  </div>
+
+  <script>
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+  </script>
+
+  <script src="page3.js"></script>
+</body>
+</html>
